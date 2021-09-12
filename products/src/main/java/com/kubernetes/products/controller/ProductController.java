@@ -1,23 +1,37 @@
 package com.kubernetes.products.controller;
 
-import com.kubernetes.products.model.ProductDto;
+import com.kubernetes.products.model.CreateProduct;
+import com.kubernetes.products.model.Product;
 import com.kubernetes.products.service.ProductService;
-import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@AllArgsConstructor
-@RestController
 @RequestMapping("/products")
+@RestController
 public class ProductController {
+
     private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
     @GetMapping("")
-    public ResponseEntity<List<ProductDto>> getAllProducts(){
-        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+    public List<Product> getProducts() {
+        return productService.findAll();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{id}")
+    public Product getProduct(@PathVariable Long id) {
+        return productService.getProduct(id);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("")
+    public boolean createProduct(@RequestBody CreateProduct product) {
+        return productService.createProduct(product) != null;
     }
 }

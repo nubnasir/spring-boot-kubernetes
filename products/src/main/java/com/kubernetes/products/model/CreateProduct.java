@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class ProductDto {
-    private Long id;
+@NoArgsConstructor
+public class CreateProduct implements Serializable {
+    private String category;
     private String name;
-    private Integer quantity;
-    private Integer soldQuantity;
+    private Double price;
 }
